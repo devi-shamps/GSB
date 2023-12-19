@@ -56,7 +56,7 @@ class FicheFraisRepository extends ServiceEntityRepository
     public function findByYear(int $year): array
     {
         return $this->createQueryBuilder('f')
-            ->andWhere("DATE_FORMAT(f.dateModif, '%Y') = :year")
+            ->andWhere("YEAR(f.dateModif) = :year")
             ->setParameter('year', $year)
             ->getQuery()
             ->getResult();
