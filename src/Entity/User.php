@@ -33,8 +33,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $login = null;
 
-    #[ORM\Column(type: Types::ARRAY)]
-    private array $role = [];
 
     #[ORM\Column(length: 255)]
     private ?string $nom = null;
@@ -56,6 +54,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: FicheFrais::class, orphanRemoval: true)]
     private Collection $ficheFrais;
+
+    #[ORM\Column(length: 255)]
+    private ?string $oldId = null;
 
     public function __construct()
     {
@@ -144,17 +145,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getRole(): array
-    {
-        return $this->role;
-    }
-
-    public function setRole(array $role): static
-    {
-        $this->role = $role;
-
-        return $this;
-    }
 
     public function getNom(): ?string
     {
@@ -254,6 +244,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $ficheFrai->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getOldId(): ?string
+    {
+        return $this->oldId;
+    }
+
+    public function setOldId(string $oldId): static
+    {
+        $this->oldId = $oldId;
 
         return $this;
     }

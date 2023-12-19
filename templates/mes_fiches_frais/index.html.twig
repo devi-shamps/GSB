@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello MesFichesFraisController!{% endblock %}
+{% block title %}Mes Fiches Frais{% endblock %}
 
 {% block body %}
 <style>
@@ -9,12 +9,56 @@
 </style>
 
 <div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    {{ form_end(form) }}
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/Users/dechamp.dimitri/Desktop/gsbFrais - Symfony/GsbFrais/src/Controller/MesFichesFraisController.php'|file_link(0) }}">src/Controller/MesFichesFraisController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/Users/dechamp.dimitri/Desktop/gsbFrais - Symfony/GsbFrais/templates/mes_fiches_frais/index.html.twig'|file_link(0) }}">templates/mes_fiches_frais/index.html.twig</a></code></li>
-    </ul>
+    <br><hr>
+
+    {% if selectedFiche is not null %}
+        <h5>Fiche de frais du: {{ selectedFiche.moisFormated }}</h5>
+        <hr>
+        <p>Etat : {{ selectedFiche.etat.libelle }} <br>
+        Montant validé : {{ selectedFiche.montant }}</p>
+        <h5><Strong>Eléments forfaitisés</Strong></h5>
+        <table class="table">
+            <thead>
+            <tr>
+                {% for uneLigneFF in selectedFiche.ligneFraisForfaits %}
+                    <th scope="col">{{ uneLigneFF.fraisforfait.libelle }}</th>
+                {% endfor %}
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                {% for uneLigneFF in selectedFiche.ligneFraisForfaits %}
+                    <td>{{ uneLigneFF.quantite }}</td>
+                {% endfor %}
+            </tr>
+            </tbody>
+        </table>
+        <br>
+        <h5><Strong>Descriptif des éléments hors forfait -{{ selectedFiche.nbJustificatifs}} justificatifs reçus -</Strong></h5>
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">Date</th>
+                <th scope="col">Libellé</th>
+                <th scope="col">Montant</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for uneLigneFHF in selectedFiche.ligneFraisHorsForfaits %}
+                <tr>
+                    <td>{{ uneLigneFHF.date|date('Y/m/d') }}</td>
+                    <td>{{ uneLigneFHF.libelle }}</td>
+                    <td>{{ uneLigneFHF.montant }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <h5>Aucune fiche Frais trouvée</h5>
+    {% endif %}
 </div>
 {% endblock %}

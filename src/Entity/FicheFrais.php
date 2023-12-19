@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use function Symfony\Component\Translation\t;
 
 #[ORM\Entity(repositoryClass: FicheFraisRepository::class)]
 class FicheFrais
@@ -39,6 +40,9 @@ class FicheFrais
     #[ORM\OneToMany(mappedBy: 'ficheFrais', targetEntity: LigneFraisForfait::class)]
     private Collection $ligneFraisForfaits;
 
+    #[ORM\Column]
+    private ?float $montant = null;
+
     public function __construct()
     {
         $this->ligneFraisHorsForfaits = new ArrayCollection();
@@ -53,6 +57,12 @@ class FicheFrais
     public function getMois(): ?string
     {
         return $this->mois;
+    }
+
+    public function  getMoisFormated(): ?string
+    {
+        $dateFiche =  \DateTimeImmutable::createFromFormat('Ym', $this->getMois());
+        return $dateFiche->format('m/Y');
     }
 
     public function setMois(string $mois): static
@@ -166,6 +176,18 @@ class FicheFrais
                 $ligneFraisForfait->setFicheFrais(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getMontant(): ?float
+    {
+        return $this->montant;
+    }
+
+    public function setMontant(float $montant): static
+    {
+        $this->montant = $montant;
 
         return $this;
     }
