@@ -191,4 +191,26 @@ class FicheFrais
 
         return $this;
     }
+
+    public function getMontantTotalForfait(): float
+    {
+        $montantTotalForfait = 0.0;
+
+        foreach ($this->ligneFraisForfaits as $ligneFraisForfait) {
+            $montantTotalForfait += $ligneFraisForfait->getQuantite() * $ligneFraisForfait->getFraisForfait()->getMontant();
+        }
+
+        return $montantTotalForfait;
+    }
+
+    public function getMontantTotalHorsForfait(): float
+    {
+        $montantTotalHorsForfait = 0.0;
+
+        foreach ($this->ligneFraisHorsForfaits as $ligneFraisHorsForfait) {
+            $montantTotalHorsForfait += $ligneFraisHorsForfait->getMontant();
+        }
+
+        return $montantTotalHorsForfait;
+    }
 }

@@ -45,4 +45,20 @@ class FicheFraisRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+    /**
+     * Retourne les fiches de frais pour une année donnée.
+     *
+     * @param int $year L'année pour laquelle récupérer les fiches de frais.
+     *
+     * @return FicheFrais[] Un tableau de fiches de frais.
+     */
+    public function findByYear(int $year): array
+    {
+        return $this->createQueryBuilder('f')
+            ->andWhere("DATE_FORMAT(f.dateModif, '%Y') = :year")
+            ->setParameter('year', $year)
+            ->getQuery()
+            ->getResult();
+    }
 }
