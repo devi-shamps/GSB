@@ -57,8 +57,11 @@
             {% endfor %}
             </tbody>
         </table>
+        <h5><strong>Montant Total Forfaitisés : {{ selectedFiche.montantTotalForfait }} </strong></h5>
+        <h5><strong>Montant Total Hors Forfait :  {{ selectedFiche.montantTotalHorsForfait }}</strong></h5>
     {% else %}
         <h5>Aucune fiche Frais trouvée</h5>
     {% endif %}
+
 </div>
 {% endblock %}

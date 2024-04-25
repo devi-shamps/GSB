@@ -21,9 +21,10 @@ class MesFichesFraisController extends AbstractController
 
         $selectedFiche = null;
 
-        $fichesFrais = $doctrine->getRepository(FicheFrais::class)->findBy(['user' => $user]);
-        $form = $this->createForm(DatePickerFormType::class, $fichesFrais);
+        $fichesFraisUser = $doctrine->getRepository(FicheFrais::class)->findBy(['user' => $user]);
+        $form = $this->createForm(DatePickerFormType::class, $fichesFraisUser);
         $form->handleRequest($request);
+
 
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var FicheFrais $selectedFiche */
@@ -33,7 +34,8 @@ class MesFichesFraisController extends AbstractController
         return $this->render('mes_fiches_frais/index.html.twig', [
             'controller_name' => 'MesFichesFraisController',
             'form' => $form->createView(),
-            'selectedFiche' => $selectedFiche
+            'selectedFiche' => $selectedFiche,
+            'fichesFraisUser' => $fichesFraisUser,
         ]);
     }
 }
