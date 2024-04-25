@@ -9,17 +9,38 @@
 </style>
 
 <div class="example-wrapper">
-    <h3>Renseigner ma fiche de frais du mois 12-2023</h3>
-    {{ form_start(formFicheFraisForfait) }}
-    {{ form_widget(formFicheFraisForfait) }}
+    <h3>Renseigner ma fiche de frais du mois {{ ficheMoisUser.mois }}</h3>
+    {{ form_start(formFraisF) }}
+    {{ form_widget(formFraisF) }}
     <button class="btn">{{ button_label|default('Save') }}</button>
-    {{ form_end(formFicheFraisForfait) }}
+    {{ form_end(formFraisF) }}
 
-    <h3>Descriptif des éléments hors forfait</h3>
-    {{ form_start(formFicheFraisHorsForfait) }}
-    {{ form_widget(formFicheFraisHorsForfait) }}
+    {{ form_start(formFraisHF) }}
+    {{ form_widget(formFraisHF) }}
     <button class="btn">{{ button_label|default('Save') }}</button>
-    {{ form_end(formFicheFraisHorsForfait) }}
+    {{ form_end(formFraisHF) }}
+
+    <p>{% if app.session.get('message') is same as(true) %}Les frais hors forfait ont bien été ajoutés.{% endif %}</p>
+    <h3>Les frais hors forfaitisés</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Libellé</th>
+                <th>Montant</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for frais in ficheMoisUser.ligneFraisHorsForfaits %}
+                <tr>
+                    <td>{{ frais.libelle }}</td>
+                    <td>{{ frais.montant }}</td>
+                    <td>
+                        {{ include('ligne_frais_hors_forfait/_delete_form.html.twig') }}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
 </div>
 {% endblock %}

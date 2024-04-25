@@ -14,8 +14,19 @@
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
         {% endblock %}
     </head>
+    <style>
+        .position {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            background-color: #f8f9fa;
+            color: #6c757d;
+            text-align: center;
+        }
+    </style>
     <body style="background-color: #FFFFFF">
-        <nav class="navbar navbar-expand-lg bg-light">
+        <nav class="navbar navbar-expand-lg ">
             <div class="container-fluid">
                 {% if app.user %}
                     <a class="navbar-brand" href="/mesfichesfrais">Galaxy Swiss Bourdin - Frais</a>
@@ -26,7 +37,7 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                    <ul class="navbar-nav">
+                    <ul class="navbar-nav ml-auto">
                         <li class="nav-item">
                             <a class="nav-link" href="/mesfichesfrais">Mes fiches frais</a>
                         </li>
@@ -43,9 +54,10 @@
                                 {% else %}
                                 Connexion
                                 {% endif %}
-
                             </a>
                             <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="/comptable">Comptabilité</a></li>
+                                <hr>
                                 <li><a class="dropdown-item" href="/logout">Deconnexion</a></li>
                             </ul>
                         </li>
@@ -54,8 +66,8 @@
             </div>
         </nav>
         {% block body %}{% endblock %}
-        <footer class="text-center text-lg-start bg-white text-muted">
-            <p class="text-center text-muted">© 2022 Company, Inc</p>
+        <footer class="text-center text-lg-start bg-white text-muted position">
+            <p class="text-center text-muted">© 2024 Galaxy Swiss Bourdin, Inc</p>
         </footer>
     </body>
 </html>
