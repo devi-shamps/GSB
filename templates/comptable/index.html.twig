@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Galaxy Swiss Bourdin | Comptabilité{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h1 class="mb-3">Bonjour {{ app.user.prenom }} {{ app.user.nom }}!</h1>
+
+        <p>Selectionnez un utilisateur:</p>
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button type="submit" class="btn btn-outline-primary ">Valider</button>
+        {{ form_end(form) }}
+
+        {% if selectedFiche is not null %}
+            <div class="border p-3 rounded  mt-3">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Mois</th>
+                        <th>Etat</th>
+                        <th>Montant</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {% for ficheFrais in selectedFiche %}
+                            <tr>
+                                <td>{{ ficheFrais.mois }}</td>
+                                <td>{{ ficheFrais.etat.libelle }}</td>
+                                <td>{{ ficheFrais.montant }}</td>
+                                <td>
+                                    <a style="text-decoration: none; color: black; font-weight: bold" href="{{ path('app_fiches_frais_users', {'id': ficheFrais.id}) }}">Afficher</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
