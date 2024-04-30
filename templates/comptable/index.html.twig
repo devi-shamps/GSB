@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Bienvenue {{ app.user.nom }}{% endblock %}
+
+{% block body %}
+    <style>
+        #ficheFraisContainer {
+            display: none;
+        }
+    </style>
+    <div class="container mt-5">
+        <h1>Bienvenue {{ app.user.nom }}</h1>
+        <p>Vous êtes connecté en tant que {{ app.user.email }}</p>
+        <!-- Ici je souhaite que le comptable puisse avoir accès a toute les fiches frais d'un utilisateur. Les infos seront dans une div et le comptable choisira l'utilisateur dans un menu déroulant -->
+        <form id="formUser" method="post">
+            <div class="form-group">
+                <label for="user">Utilisateur</label>
+                <select name="user" id="user" class="form-control">
+                    {% for user in users %}
+                        <option value="{{ user.id }}">{{ user.nom }} {{ user.prenom }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" id="test" class="btn btn-primary mt-4">Voir les fiches frais</button>
+        </form>
+        <hr>
+        <div id="ficheFraisContainer">
+            <h1>Les fiches frais de l'utilisateur</h1>
+
+        </div>
+    </div>
+
+{% endblock %}
