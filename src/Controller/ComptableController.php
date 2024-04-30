@@ -4,11 +4,9 @@ namespace App\Controller;
 
 use App\Entity\FicheFrais;
 use App\Entity\User;
-
-
-use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,16 +14,36 @@ use Symfony\Component\Routing\Annotation\Route;
 class ComptableController extends AbstractController
 {
     #[Route('/comptable', name: 'app_comptable')]
-    public function index(Request $request,EntityManagerInterface $entityManager): Response
+    public function index(ManagerRegistry $doctrine, Request $request): Response
     {
-        $users = $entityManager->getRepository(User::class)->findAll();
-        dd($request->get('id'));
 
+        $users = $doctrine->getRepository(User::class)->findAll();
+        $lesUsers = [];
+        foreach ($users as $user) {
+            $lesUsers[$user->getNom()] = $user->getId();
+        }
+
+        $ficheUsers = null;
+        $form = $this->createFormBuilder()
+            ->add('user', ChoiceType::class, [
+                'choices'  => $lesUsers,
+                'label' => false, // Ajoutez cette ligne
+
+            ])
+            ->getForm();
+
+        $form->handleRequest($request);
+
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            /** @var FicheFrais $ficheUsers */
+            $ficheUsers = $doctrine->getRepository(FicheFrais::class)->findBy(['user' => $form->get('user')->getData()]);
+        }
 
         return $this->render('comptable/index.html.twig', [
             'controller_name' => 'ComptableController',
-            'users' => $users,
+            'form' => $form->createView(),
+            'selectedFiche' => $ficheUsers,
         ]);
     }
-
 }

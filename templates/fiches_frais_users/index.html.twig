@@ -1,0 +1,89 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello FichesFraisUsersController!{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h2 class="text-center mt-5">Fiche de {{ ficheDate.getUser().getPrenom() }} {{ ficheDate.getUser().getNom() }}</h2>
+        <div class=" p-3 mb-4 mt-5">
+            {% if ficheDate is not null %}
+                <table class="table mt-2">
+                    <tr>
+                        <th>État</th>
+                        <td>{{ ficheDate.getEtat().getLibelle() }}</td>
+                    </tr>
+                    <tr>
+                        <th>Nom User</th>
+                        <td>{{ ficheDate.getUser().getNom() }}</td>
+                    </tr>
+                    <tr>
+                        <th>Mois</th>
+                        <td>{{ ficheDate.getMois() }}</td>
+                    </tr>
+                    <tr>
+                        <th>Nombre de Justificatifs</th>
+                        <td>{{ ficheDate.getNbJustificatifs() }}</td>
+                    </tr>
+                    <tr>
+                        <th>Montant Validé</th>
+                        <td>{{ ficheDate.montant() }} €</td>
+                    </tr>
+                    <tr>
+                        <th>Date de Modification</th>
+                        <td>{{ ficheDate.getDateModif()|date('d / m / Y') }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <br>
+                <h2>Eléments forfaitisés</h2>
+                <table class="table table-bordered">
+                    <center>
+                        <tr>
+                            <th><center>Forfait</center></th>
+                            <th><center>Frais Kilométrique	</center></th>
+                            <th><center>Nuitée Hôtel	</center></th>
+                            <th><center>Repas Restaurant</center></th>
+                        </tr>
+                    </center>
+                    <tr>
+                        <th><center>{{ totalKm }} </center></th>
+                        <th><center>{{ totalEtape }}</center></th>
+                        <th><center>{{ totalNuit }}</center></th>
+                        <th><center>{{ totalRepas }}</center></th>
+                    </tr>
+                    </tbody>
+                </table>
+                <h5>Total: {{ ficheDate.montantTotalForfait() }} €</h5>
+                <br>
+                <h2>Eléments hors forfaitisés</h2>
+                <br>
+
+                <table class="table table-bordered">
+                    <tr>
+                        <th>Libelle</th>
+                        <th>Montant</th>
+                        <th>Date</th>
+                    </tr>
+
+
+                    {% for fraisHorsForfait in ficheDate.ligneFraisHorsForfaits() %}
+                        <tr>
+                            <td>{{fraisHorsForfait.getLibelle()}}</td>
+                            <td>{{fraisHorsForfait.getMontant()}} €</td>
+                        </tr>
+
+                    {%endfor %}
+                </table>
+
+                <h5 class="mt-5">Etat de la fiche: <span style="color: seagreen">{{ ficheDate.etat.libelle }}</span></h5>
+                {{ form_start(formEtat) }}
+                {{ form_end(formEtat) }}
+
+            {% else %}
+                <h1 style="color: red;">Aucune fiches trouvées</h1>
+            {% endif %}
+        </div>
+        <div class="mb-6">
+        </div>
+    </div>
+{% endblock %}
